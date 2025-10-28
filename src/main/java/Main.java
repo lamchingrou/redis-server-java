@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.OutputStream;
+import java.io.OutputStream;
 
 public class Main {
   public static void main(String[] args){
