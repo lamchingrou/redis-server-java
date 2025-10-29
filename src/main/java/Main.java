@@ -3,7 +3,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.OutputStream;
 import java.io.InputStream;
-import org.apache.commons.io.IOUtils;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Main {
   public static void main(String[] args){
@@ -21,16 +22,13 @@ public class Main {
       serverSocket.setReuseAddress(true);
       // Wait for connection from client.
       clientSocket = serverSocket.accept();
-      OutputStream out = clientSocket.getOutputStream();
-      InputStream in = clientSocket.getInputStream();
+      System.out.println("Client connected!");
       
-      String inputString = IOUtils.toString(in);
-      String[] lines = inputString.split("\r\n");
-      for (String line : lines) {
-        System.out.println("Received: " + line);
-        if ("PING".equals(line)) {
-          out.write("+PONG\r\n".getBytes());
-        }
+      OutputStream out = clientSocket.getOutputStream();
+      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+      
+      while (reader.readLine() != null) {
+        out.write("+PONG\r\n".getBytes());
       }
     } catch (IOException e) {
       System.out.println("IOException: " + e.getMessage());
