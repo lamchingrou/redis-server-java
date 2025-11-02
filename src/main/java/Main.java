@@ -30,6 +30,7 @@ public class Main {
       
       while (reader.readLine() != null) { 
         out.write("+PONG\r\n".getBytes());
+        out.flush();
       }
     } catch (IOException e) {
       System.out.println("IOException: " + e.getMessage());
