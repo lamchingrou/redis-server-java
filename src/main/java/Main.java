@@ -25,6 +25,7 @@ public class Main {
       System.out.println("Client connected!");
       
       OutputStream out = clientSocket.getOutputStream();
+      InputStream in = clientSocket.getInputStream();
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       
       while (reader.readLine() != null) {
