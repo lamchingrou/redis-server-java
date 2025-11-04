@@ -26,7 +26,6 @@ public class Main {
         System.out.println("Reveived: " + line);
         out.write("+PONG\r\n".getBytes());
         out.flush();
-        break;
       }
     } catch (IOException e) {
       System.out.println("IOException: " + e.getMessage());
