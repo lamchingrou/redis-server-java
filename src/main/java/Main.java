@@ -21,7 +21,9 @@ public class Main {
       InputStream in = clientSocket.getInputStream();
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       
-      while (reader.readLine() != null) { 
+      String line;
+      while ((line = reader.readLine()) != null) { 
+        System.out.println("Reveived: " + line);
         out.write("+PONG\r\n".getBytes());
         out.flush();
         break;
