@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class RedisServer extends Thread {
+public class Main extends Thread {
   public void run() {
       ServerSocket serverSocket = null;
       Socket clientSocket = null;
@@ -35,6 +35,6 @@ public class RedisServer extends Thread {
     }
   
   public static void main(String[] args){
-    (new RedisServer()).start();
+    (new Main()).start();
   }
 }
