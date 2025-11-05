@@ -2,39 +2,37 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Main extends Thread {
-  public void run() {
-      ServerSocket serverSocket = null;
-      Socket clientSocket = null;
-      int port = 6379;
-      try {
-        serverSocket = new ServerSocket(port);
-        serverSocket.setReuseAddress(true);
-        // Wait for connection from client.
-        clientSocket = serverSocket.accept();
+public class Main {
+  public static void main(String[] args) {
+    int port = 6379;
+    boolean listening = true;
 
-        while (true) {
-          // Read input from client.
+    try (ServerSocket serverSocket = new ServerSocket(port)) {
+      serverSocket.setReuseAddress(true);
+
+      while (listening) {
+        Socket clientSocket = serverSocket.accept();
+        System.out.println("New client connected");
+
+        new Thread(() -> handleClient(clientSocket))
+            .start(); // todo replace by threadpool later
+      }
+    } catch (IOException e) {
+      System.out.println("IOException: " + e.getMessage());
+    }
+  }
+
+  private static void handleClient(Socket clientSocket) {
+    try {
+      while (true) {
           byte[] input = new byte[1024];
           clientSocket.getInputStream().read(input);
           String inputString = new String(input).trim();
           System.out.println("Received: " + inputString);
           clientSocket.getOutputStream().write("+PONG\r\n".getBytes());
-        }
-      } catch (IOException e) {
-        System.out.println("IOException: " + e.getMessage());
-      } finally {
-        try {
-          if (clientSocket != null) {
-            clientSocket.close();
-          }
-        } catch (IOException e) {
-          System.out.println("IOException: " + e.getMessage());
-        }
       }
+    } catch (IOException e) {
+      System.out.println("IOException: " + e.getMessage());
     }
-  
-  public static void main(String[] args){
-    (new Main()).start();
   }
 }
