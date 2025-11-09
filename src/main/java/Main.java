@@ -28,12 +28,20 @@ public class Main {
           byte[] input = new byte[1024];
           clientSocket.getInputStream().read(input);
           String inputString = new String(input).trim();
+          System.out.println("Received: " + inputString);
+          
           if (inputString.contains("ECHO")) {
-              String[] parts = inputString.split(" ", 2);
-              String output = "$" + parts[1].length() + "\r\n" + parts[1] + "\r\n";
+              // For ECHO command, extract the message to echo back
+              // Simple parsing: find the last line which should be the message
+              String[] lines = inputString.split("\\r?\\n");
+              String message = "";
+              if (lines.length > 0) {
+                  message = lines[lines.length - 1]; // Last line is the message
+              }
+              String output = "$" + message.length() + "\r\n" + message + "\r\n";
               clientSocket.getOutputStream().write(output.getBytes());
           } else {
-            System.out.println("Received: " + inputString);
+            // Default response for PING or other commands
             clientSocket.getOutputStream().write("+PONG\r\n".getBytes());
           }
       }
