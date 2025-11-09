@@ -2,7 +2,7 @@
 
 # Push to CodeCrafters for submission
 echo "Pushing to CodeCrafters..."
-git push origin main
+git push
 
 # Push to GitHub for contributions (uncomment after setting up GitHub remote)
 echo "Pushing to GitHub..."
