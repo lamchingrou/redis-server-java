@@ -61,9 +61,9 @@ public class Main {
 
   private static void handleSet(String inputString, Socket clientSocket) throws IOException {
       String[] lines = inputString.split("\\r?\\n");
-      if (lines.length >= 4) {
-          String key = lines[2];
-          String value = lines[4];
+      if (lines.length >= 7) {
+          String key = lines[4];
+          String value = lines[6];
           dataStore.put(key, value);
           String output = "+OK\r\n";
           clientSocket.getOutputStream().write(output.getBytes());
@@ -75,8 +75,8 @@ public class Main {
 
   private static void handleGet(String inputString, Socket clientSocket) throws IOException {
       String[] lines = inputString.split("\\r?\\n");
-      if (lines.length >= 3) {
-          String key = lines[2];
+      if (lines.length >= 5) {
+          String key = lines[4];
           String value = dataStore.get(key);
           if (value != null) {
               String output = "$" + value.length() + "\r\n" + value + "\r\n";
