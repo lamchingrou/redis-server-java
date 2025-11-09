@@ -17,7 +17,7 @@ public class Main {
         new Thread(() -> handleClient(clientSocket))
             .start(); // todo replace by threadpool later
       }
-    } catch (IOException e) {
+    } catch (IOException e) { // server level errors
       System.out.println("IOException: " + e.getMessage());
     }
   }
@@ -28,10 +28,16 @@ public class Main {
           byte[] input = new byte[1024];
           clientSocket.getInputStream().read(input);
           String inputString = new String(input).trim();
-          System.out.println("Received: " + inputString);
-          clientSocket.getOutputStream().write("+PONG\r\n".getBytes());
+          if (inputString.contains("ECHO")) {
+              String[] parts = inputString.split(" ", 2);
+              String output = "$" + parts[1].length() + "\r\n" + parts[1] + "\r\n";
+              clientSocket.getOutputStream().write(output.getBytes());
+          } else {
+            System.out.println("Received: " + inputString);
+            clientSocket.getOutputStream().write("+PONG\r\n".getBytes());
+          }
       }
-    } catch (IOException e) {
+    } catch (IOException e) { // client level errors
       System.out.println("IOException: " + e.getMessage());
     }
   }
